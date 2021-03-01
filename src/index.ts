@@ -14,15 +14,18 @@ import cors from "cors";
 import { createConnection } from "typeorm";
 import { Post } from "./entities/Post";
 import { User } from "./entities/User";
+import path from "path";
 
+//asdfssdf
 const main = async () => {
   await createConnection({
     type: "postgres",
-    database: "reddito2",
+    database: "reddito",
     username: "postgres",
     password: "postgres",
     logging: true,
     synchronize: true,
+    migrations: [path.join(__dirname + "/migrations/*")],
     entities: [Post, User],
   });
 

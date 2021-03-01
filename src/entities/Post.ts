@@ -30,11 +30,11 @@ export class Post extends BaseEntity {
 
   @Field()
   @Column()
-  text!: string;
+  title!: string;
 
   @Field()
   @Column()
-  title!: string;
+  text!: string;
 
   @Field(() => String)
   @CreateDateColumn()
