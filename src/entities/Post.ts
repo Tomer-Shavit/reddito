@@ -7,7 +7,9 @@ import {
   Entity,
   BaseEntity,
   ManyToOne,
+  OneToMany,
 } from "typeorm";
+import { Upvote } from "./Upvote";
 import { User } from "./User";
 
 @ObjectType()
@@ -17,10 +19,14 @@ export class Post extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @OneToMany(() => Upvote, (upvote) => upvote.post)
+  upvotes: Upvote[];
+
   @Field()
   @Column()
   creatorId: number;
 
+  @Field()
   @ManyToOne(() => User, (user) => user.posts)
   creator: User;
 

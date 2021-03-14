@@ -4,10 +4,12 @@ import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   Mutation,
   ObjectType,
   Query,
   Resolver,
+  Root,
 } from "type-graphql";
 import argon2 from "argon2";
 import { COOKIE_NAME, FORGOT_PASSWORD_PREFIX } from "../constants";
@@ -33,8 +35,19 @@ class UserResponse {
   errors?: FieldError[];
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+  //This is a resolver specific to the email field in the user type, which conditinaly check if post email is the same as the user email
+  @FieldResolver(() => String)
+  email(@Root() user: User, @Ctx() { req }: myContext) {
+    //this is their email so they can see it
+    if (req.session.userId === user.id) {
+      return user.email;
+    }
+    //an empty string will show in the case of other user
+    return "";
+  }
+
   @Mutation(() => UserResponse)
   async changePassword(
     @Ctx() { redis, req }: myContext,
